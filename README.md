@@ -191,13 +191,19 @@ Now both spellings point to the same files — reinstall-proof. Combine with Fix
 
 ## After it loads: `Error starting ASIO`
 
-If the driver now **loads** but a host still says **`Error starting ASIO`**, that's a different (normal) thing: **the RODE AI-1 ASIO driver is single-client** — only **one** application can hold it at a time.
+The path is fixed and the driver **loads**, but a host still says **`Error starting ASIO`**? The driver is fine — the device just can't be *opened*. Common causes, in order:
 
-If REAPER, OBS, Realphones, etc. are open together, whichever grabbed the AI-1 first owns it; the rest fail to start ASIO. Fixes:
+1. **Another ASIO app already holds it.** The AI-1 ASIO driver is **single-client** — only one ASIO host at a time. Close the others (Realphones, another DAW…), then *Retry*. Apps on normal Windows audio (OBS capture, Discord) can use it **at the same time** via **WASAPI** — only a *second ASIO host* conflicts.
+2. **Exclusive mode is off.** Windows → *Sound* → AI-1 → **Properties → Advanced** → tick **both** "Allow applications to take exclusive control…" boxes — for **both** the Playback **and** the Recording device. ASIO needs exclusive access.
+3. **Your DAW requests the wrong input channel count.** The AI-1 has a **single (mono) input**. If the DAW tries to open 2 input channels, the start fails. Set the input to **one** channel — or disable inputs if you only play back.
+4. **Something else is holding the device** — e.g. *Listen to this device* enabled on the input, or another app streaming to the AI-1 while it's the default device.
 
-- Keep **one** ASIO host on the AI-1 at a time (close the others, then *Retry*).
-- For apps that don't need exclusive low-latency access (e.g. OBS capture), use **WASAPI** instead of ASIO.
-- To truly share the device between apps, route through a virtual audio device (e.g. VB-CABLE / VoiceMeeter) instead of giving each app direct ASIO.
+### REAPER note (keep this in mind if the error reappears)
+
+In *Preferences → Audio → Device*:
+- Set **Enable inputs → first and last both to channel 1** (mono) — the AI-1 has one input; asking for 2 is the usual cause of `Error starting ASIO` in REAPER. Or just **uncheck Enable inputs** if you only need output.
+- Stubborn driver? Tick **Ignore ASIO reset messages**, then *Retry*.
+- `Record Warning: No tracks are armed for recording` is **not** this error — it's just REAPER reminding you to record-arm a track before recording.
 
 ---
 
