@@ -9,6 +9,8 @@ Fix for the official **RØDE AI-1** ASIO driver that **lists in your DAW but ref
 
 > **Affects every ASIO host at once** — REAPER, OBS, Ableton Live, Cubase, FL Studio, Realphones, etc. — because they all read the same broken registry entry.
 
+> ✅ **Status: confirmed working as of 2026-06-27** — verified on Windows 11 24H2 (build 26200) with RODE AI-1 ASIO **1.1.0.0**, the current driver at the time of writing.
+
 ---
 
 ## TL;DR
@@ -146,6 +148,7 @@ If REAPER, OBS, Realphones, etc. are open together, whichever grabbed the AI-1 f
 - Windows 11 Pro, build 26200 (24H2)
 - RODE AI-1 ASIO Control Panel **1.1.0.0**
 - Verified in REAPER 7.x, OBS 32.x, dSONIQ Realphones
+- **Last verified working: 2026-06-27**
 
 ---
 
