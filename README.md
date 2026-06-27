@@ -13,6 +13,8 @@ Fix for the official **RØDE AI-1** ASIO driver that **lists in your DAW but ref
 
 > ✅ **Status: confirmed working as of 2026-06-27** — verified on Windows 11 24H2 (build 26200) with RODE AI-1 ASIO **1.1.0.0**, the current driver at the time of writing.
 
+![RODE AI-1 ASIO Control Panel (v1.1.0.0)](images/rode-ai-1-asio-control-panel.png)
+
 ---
 
 ## TL;DR
@@ -48,6 +50,12 @@ Two fixes are provided:
 - ❌ Selecting it → **`No such device`** or **`Error starting ASIO`**.
 - ❌ The failure is identical in **all** ASIO applications.
 
+What it looks like — the driver is in the list, but opening it fails:
+
+| `No such device` (Realphones) | `Error starting ASIO` (REAPER) |
+|:---:|:---:|
+| ![No such device error](images/error-no-such-device.png) | ![Error starting ASIO](images/error-starting-asio.png) |
+
 If that matches you, this is almost certainly the path-mismatch bug.
 
 ---
@@ -82,6 +90,8 @@ Just want it working and don't care about the details? Follow these steps — ab
 1. **Fully close** your app (REAPER, OBS, Cubase, Ableton, Realphones…) and open it again.
 2. In its audio settings, choose **ASIO → RODE AI-1 ASIO**.
 3. It should now open **without** the `No such device` / `Error starting ASIO` message. 🎉
+
+![Driver working — RODE AI-1 ASIO open at 48000 Hz](images/working-realphones.png)
 
 ### 4. (Recommended) Make it survive future reinstalls
 
