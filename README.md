@@ -34,6 +34,8 @@ Two fixes are provided:
 1. **[Fix the registry path](#fix-1--repair-the-registry-one-time)** — one-time repair.
 2. **[Create a permanent junction](#fix-2--permanent-immunity-junction)** — survives future driver reinstalls.
 
+👉 **Not comfortable with the registry or command line? Jump to [Quick Start](#quick-start-no-experience-needed) for click-by-click steps.**
+
 ---
 
 ## Symptoms checklist
@@ -45,6 +47,51 @@ Two fixes are provided:
 - ❌ The failure is identical in **all** ASIO applications.
 
 If that matches you, this is almost certainly the path-mismatch bug.
+
+---
+
+## Quick Start (no experience needed)
+
+Just want it working and don't care about the details? Follow these steps — about 3 minutes, **no prior command-line experience required**.
+
+### 1. Download the files
+
+1. Click the green **`< > Code`** button near the top of this page → **Download ZIP**.
+2. Open your **Downloads** folder, right-click `rode-ai-1-asio-fix-main.zip` → **Extract All… → Extract**.
+3. Open the extracted folder, then open the **`scripts`** folder inside it.
+
+### 2. Run the fix
+
+1. Inside the `scripts` folder, hold **Shift** and **right-click** an empty spot → choose **"Open PowerShell window here"** (on some systems it's **"Open in Terminal"**).
+   *If you don't see that option: click the folder's address bar, type `powershell`, and press **Enter**.*
+2. Copy-paste this line and press **Enter**:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\fix-registry.ps1
+   ```
+3. A blue **User Account Control** window appears asking for permission — click **Yes**. (The fix needs admin rights to edit the registry; it **backs everything up first**.)
+4. A window shows what changed and ends with **"Done."** Press **Enter** to close it.
+
+> 💡 You don't have to find any files or paths yourself — the script locates the driver and corrects the registry automatically.
+
+### 3. Check that it worked
+
+1. **Fully close** your app (REAPER, OBS, Cubase, Ableton, Realphones…) and open it again.
+2. In its audio settings, choose **ASIO → RODE AI-1 ASIO**.
+3. It should now open **without** the `No such device` / `Error starting ASIO` message. 🎉
+
+### 4. (Recommended) Make it survive future reinstalls
+
+So you never have to do this again — even after reinstalling RØDE software — run this once, the same way (Shift+right-click → Open PowerShell here → paste → **Yes** on UAC):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\make-junction.ps1
+```
+
+---
+
+**Still getting `Error starting ASIO`?** That's not the driver — another program already grabbed the AI-1. See [After it loads](#after-it-loads-error-starting-asio).
+
+**Don't want to run scripts at all?** Do the exact same fix by hand — see [Manual alternative (regedit)](#manual-alternative-regedit).
 
 ---
 
@@ -102,14 +149,21 @@ Then **fully restart your DAW** and select `RODE AI-1 ASIO` again. No reboot nee
 
 ### Manual alternative (regedit)
 
-1. `Win+R` → `regedit`.
-2. Go to `HKEY_LOCAL_MACHINE\SOFTWARE\ASIO\RODE AI-1 ASIO Driver`, note the `CLSID` value.
-3. Edit the **(Default)** value of both:
-   - `HKLM\SOFTWARE\Classes\CLSID\<CLSID>\InProcServer32`
-   - `HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\<CLSID>\InProcServer32`
-   so they point to the real files (copy the path straight from Explorer's address bar so the `Ø` is correct):
-   - 64-bit → `…\RØDE Microphones\AI-1-ASIO\RODE-AI-1-ASIO-x64.dll`
-   - 32-bit → `…\RØDE Microphones\AI-1-ASIO\RODE-AI-1-ASIO.dll`
+Prefer not to run a script? Do the exact same change by hand:
+
+1. Press **`Win + R`**, type **`regedit`**, press **Enter**, click **Yes** on the prompt.
+2. Paste this into Registry Editor's **address bar** (top) and press **Enter**:
+   `Computer\HKEY_LOCAL_MACHINE\SOFTWARE\ASIO\RODE AI-1 ASIO Driver`
+   On the right, double-click **`CLSID`** and **copy** its value (it looks like `{46AD04E9-…}`).
+3. Get the correct path **with the real `Ø`**: open `C:\Program Files (x86)` in File Explorer, open the **`RØDE Microphones\AI-1-ASIO`** folder, click the **address bar**, and copy the full path shown there.
+4. Go to each key below (paste in regedit's address bar, replacing `<CLSID>` with the value from step 2), double-click **`(Default)`**, and set it to the real file:
+   - `Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\<CLSID>\InProcServer32`
+     → `…\RØDE Microphones\AI-1-ASIO\RODE-AI-1-ASIO-x64.dll`
+   - `Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\<CLSID>\InProcServer32`
+     → `…\RØDE Microphones\AI-1-ASIO\RODE-AI-1-ASIO.dll`
+5. Close Registry Editor and restart your DAW.
+
+> ⚠️ The whole bug **is** that `Ø`. Don't retype the path by hand — you'll almost certainly type a normal `O` and reproduce the problem. Copy it from Explorer's address bar so the character is exact.
 
 ---
 
