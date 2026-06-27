@@ -7,6 +7,8 @@ Fix for the official **RØDE AI-1** ASIO driver that **lists in your DAW but ref
 
 …even though the AI-1 shows up perfectly fine in Windows and works for normal playback.
 
+> 🔗 **This repairs the _official_ RØDE AI-1 ASIO driver** — the one from RØDE's own product page: **[rode.com/en-int/products/ai-1 → Downloads](https://rode.com/en-int/products/ai-1#section-downloads)**. It is **not** a third-party replacement (like ASIO4ALL/FlexASIO); it fixes the registry path that the official installer leaves broken.
+
 > **Affects every ASIO host at once** — REAPER, OBS, Ableton Live, Cubase, FL Studio, Realphones, etc. — because they all read the same broken registry entry.
 
 > ✅ **Status: confirmed working as of 2026-06-27** — verified on Windows 11 24H2 (build 26200) with RODE AI-1 ASIO **1.1.0.0**, the current driver at the time of writing.
@@ -53,6 +55,8 @@ If that matches you, this is almost certainly the path-mismatch bug.
 ## Quick Start (no experience needed)
 
 Just want it working and don't care about the details? Follow these steps — about 3 minutes, **no prior command-line experience required**.
+
+> **Prerequisite:** the **official RØDE AI-1 ASIO driver** must already be installed. Get it from RØDE's official page → **[rode.com/en-int/products/ai-1 → Downloads](https://rode.com/en-int/products/ai-1#section-downloads)**. This repo *fixes* that driver — it doesn't replace it.
 
 ### 1. Download the files
 
@@ -205,6 +209,13 @@ If REAPER, OBS, Realphones, etc. are open together, whichever grabbed the AI-1 f
 - **Last verified working: 2026-06-27**
 
 ---
+
+## Official driver & resources
+
+- **Official RØDE AI-1 driver download** → https://rode.com/en-int/products/ai-1#section-downloads
+- RØDE Help Center — *AI-1 ASIO Drivers* → https://help.rode.com/hc/en-us/articles/360000399616-AI-1-ASIO-Drivers
+
+Always install the **official** driver from the links above first. This repository does **not** distribute the driver — it only repairs the registry entry the official installer leaves pointing at the wrong path.
 
 ## Disclaimer
 
